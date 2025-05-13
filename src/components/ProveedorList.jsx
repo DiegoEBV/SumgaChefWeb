@@ -1,44 +1,30 @@
-import { useEffect, useState } from "react";
-import { getProveedores } from "../api/proveedores";
+import React from 'react';
+import ProductCard from './ProductCard';
 
-function ProveedorList() {
-  const [proveedores, setProveedores] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const sampleProducts = [
+  {
+    name: 'Arroz Costeños Extra Añejo',
+    price: 2.29,
+    stock: 20,
+    image: '/arroz.png'
+  },
+  {
+    name: 'Azucar Refinada CasaGrande',
+    price: 2.69,
+    stock: 11,
+    image: '/azucar.png'
+  },
+  // ...otros productos
+];
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setLoading(true);
-        const data = await getProveedores();
-        setProveedores(data);
-      } catch (err) {
-        setError('Error al cargar proveedores');
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-  }, []);
-
-  if (loading) return <p>Cargando proveedores...</p>;
-  if (error) return <p className="text-red-600">{error}</p>;
-
+const ProveedorList = () => {
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Lista de Proveedores</h2>
-      <ul className="space-y-2">
-        {proveedores.map((prov) => (
-          <li key={prov.id_prov} className="border p-4 rounded shadow">
-            <h3 className="text-lg font-semibold">{prov.nombre_prov}</h3>
-            <p>{prov.desc_prov}</p>
-            <p>{prov.direc_prov} - {prov.distrito_prov}</p>
-            <p>Email: {prov.correo_prov}</p>
-          </li>
-        ))}
-      </ul>
+    <div className="grid grid-cols-3 gap-6 mt-6">
+      {sampleProducts.map((product, idx) => (
+        <ProductCard key={idx} product={product} />
+      ))}
     </div>
   );
-}
+};
 
 export default ProveedorList;
