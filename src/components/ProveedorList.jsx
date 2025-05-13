@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { getProveedores } from "../api/proveedores";
 
@@ -29,11 +30,11 @@ function ProveedorList() {
       <h2 className="text-2xl font-bold mb-4">Lista de Proveedores</h2>
       <ul className="space-y-2">
         {proveedores.map((prov) => (
-          <li key={prov.id_prov} className="border p-4 rounded shadow">
-            <h3 className="text-lg font-semibold">{prov.nombre_prov}</h3>
-            <p>{prov.desc_prov}</p>
-            <p>{prov.direc_prov} - {prov.distrito_prov}</p>
-            <p>Email: {prov.correo_prov}</p>
+          <li key={prov.id} className="border p-4 rounded shadow">
+            <h3 className="text-lg font-semibold">{prov.nombre}</h3>
+            <p>{prov.desc}</p>
+            <p>{prov.direc} - {prov.distrito}</p>
+            <p>Email: {prov.correo}</p>
           </li>
         ))}
       </ul>

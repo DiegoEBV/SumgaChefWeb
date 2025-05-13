@@ -1,3 +1,4 @@
+import React from "react";
 import { createContext, useState } from "react";
 
 export const CartContext = createContext();
@@ -7,10 +8,10 @@ export function CartProvider({ children }) {
 
   const addToCart = (producto) => {
     setCartItems((prev) => {
-      const found = prev.find((item) => item.id_prod === producto.id_prod);
+      const found = prev.find((item) => item.id === producto.id);
       if (found) {
         return prev.map((item) =>
-          item.id_prod === producto.id_prod
+          item.id_prod === producto.id
             ? { ...item, cantidad: (item.cantidad || 1) + 1 }
             : item
         );
@@ -20,9 +21,9 @@ export function CartProvider({ children }) {
     });
   };
 
-  const removeFromCart = (id_prod) => {
+  const removeFromCart = (id) => {
     setCartItems((prev) =>
-      prev.filter((item) => item.id_prod !== id_prod)
+      prev.filter((item) => item.id !== id)
     );
   };
 

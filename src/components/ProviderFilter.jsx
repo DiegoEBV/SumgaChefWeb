@@ -1,3 +1,4 @@
+import React from "react";
 export default function ProviderFilter({ proveedores, selected, onChange }) {
   return (
     <select
@@ -7,8 +8,8 @@ export default function ProviderFilter({ proveedores, selected, onChange }) {
     >
       <option value="">Todos los proveedores</option>
       {proveedores.map((prov) => (
-        <option key={prov.id_prov} value={prov.id_prov}>
-          {prov.nombre_prov}
+        <option key={prov.id} value={prov.id}>
+          {prov.nombre}
         </option>
       ))}
     </select>

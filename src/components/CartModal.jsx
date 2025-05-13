@@ -5,7 +5,7 @@ export default function CartModal() {
   const { cartItems } = useContext(CartContext);
 
   const total = cartItems.reduce(
-    (sum, item) => sum + item.precioun_prod * (item.cantidad || 1),
+    (sum, item) => sum + item.precio * (item.cantidad || 1),
     0
   );
 
@@ -18,8 +18,8 @@ export default function CartModal() {
         <>
           <ul>
             {cartItems.map((item) => (
-              <li key={item.id_prod} className="border-b py-1">
-                {item.nombre_prod} - S/ {item.precioun_prod.toFixed(2)}
+              <li key={item.id} className="border-b py-1">
+                {item.nombre} - S/ {item.precio.toFixed(2)}
               </li>
             ))}
           </ul>
