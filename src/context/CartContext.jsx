@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createContext, useState } from "react";
 
 export const CartContext = createContext();
@@ -11,7 +11,7 @@ export function CartProvider({ children }) {
       const found = prev.find((item) => item.id === producto.id);
       if (found) {
         return prev.map((item) =>
-          item.id_prod === producto.id
+          item.id === producto.id
             ? { ...item, cantidad: (item.cantidad || 1) + 1 }
             : item
         );
@@ -37,3 +37,5 @@ export function CartProvider({ children }) {
     </CartContext.Provider>
   );
 }
+
+export const useCart = () => useContext(CartContext);
