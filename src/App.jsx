@@ -1,22 +1,14 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Landing from "./pages/Landing";
-import Productos from "./pages/Productos";
-import Pedidos from "./pages/Pedidos";
-import Calificaciones from "./pages/Calificaciones";
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
 
-function App() {
+const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/productos" element={<Productos />} />
-        <Route path="/pedidos" element={<Pedidos />} />
-        <Route path="/calificaciones" element={<Calificaciones />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      {/* puedes agregar más rutas */}
+    </Routes>
   );
-}
+};
 
 export default App;

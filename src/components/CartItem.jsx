@@ -1,8 +1,19 @@
-export default function CartItem({ item }) {
+// src/components/CartItem.jsx
+import React from 'react';
+
+const CartItem = ({ item }) => {
   return (
-    <div className="flex justify-between items-center border-b p-2">
-      <span>{item.nombre_prod}</span>
-      <span>{item.cantidad || 1} x S/ {item.precioun_prod.toFixed(2)}</span>
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3 justify-between">
+        <img src={item.imagen} alt={item.nombre} className="w-12 h-12 object-cover rounded" />
+        <div>
+          <p className="font-medium">{item.nombre}</p>
+          <p className="text-gray-400 text-sm">x{item.cantidad}</p>
+        </div>
+      </div>
+      <div className="font-semibold">S/ {(item.precio * item.cantidad).toFixed(2)}</div>
     </div>
   );
-}
+};
+
+export default CartItem;

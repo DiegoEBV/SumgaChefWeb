@@ -5,6 +5,7 @@ import { API_BASE_URL } from "../constants/config";
 export const createPedido = async (pedidoData) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/pedidos`, pedidoData);
+    console.log("Pedido creado:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error al crear pedido:", error);
