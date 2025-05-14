@@ -1,13 +1,12 @@
-import React from 'react';
+// src/components/CartModal.jsx
+import React, { useContext } from 'react';
+import { CartContext } from '../context/CartContext';
 import CartItem from './CartItem';
-
-const mockCart = [
-  { name: 'Leche Gloria Deslactosada', qty: 2, price: 2.29, image: 'assets/imagenes/leche.png' },
-  { name: 'Arroz Costeños Extra', qty: 1, price: 2.69, image: 'assets/imagenes/arroz2.png' },
-];
+import { Trash2 } from 'lucide-react';
 
 const CartModal = ({ onContinue }) => {
-  const subtotal = mockCart.reduce((acc, item) => acc + item.price * item.qty, 0);
+  const { cartItems, removeFromCart } = useContext(CartContext); // Usamos el CartContext
+  const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
 
   return (
     <div className="bg-[#2a2b39] h-full rounded-xl p-5 flex flex-col justify-between text-white shadow-md">
@@ -26,9 +25,17 @@ const CartModal = ({ onContinue }) => {
       </div>
 
       {/* Cart Items */}
-      <div className="flex-1 overflow-y-auto space-y-4 text-sm pr-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
-        {mockCart.map((item, idx) => (
-          <CartItem key={idx} item={item} />
+      <div className="flex-1 justify-between overflow-y-auto space-y-4 text-sm pr-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+        {cartItems.map((item) => (
+          <div key={item.id_prod} className="flex justify-between items-center">
+            <CartItem item={item} />
+            <button
+              onClick={() => removeFromCart(item.id)}
+              className="bg-red-500 text-white px-2 py-1 rounded-full hover:bg-red-400"
+            >
+              <Trash2 size={16} />
+            </button>
+          </div>
         ))}
       </div>
 

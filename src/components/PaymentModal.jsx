@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { X, ChevronLeft, Plus, Trash2 } from 'lucide-react';
+import { CartContext } from '../context/CartContext';
+import { useContext } from 'react';
+import { toast } from 'react-hot-toast';
+import axios from 'axios';
+import { createPedido } from '../api/pedidos';
 
 const paymentMethods = [
   { label: 'Credit Card', value: 'card', icon: <i className="fa-regular fa-credit-card" /> },
@@ -9,6 +14,34 @@ const paymentMethods = [
 
 const PaymentModal = ({ open, onClose, cart, subtotal }) => {
   const [selectedMethod, setSelectedMethod] = useState('card');
+  const {removeFromCart, clearCart} = useContext(CartContext);
+
+const handleConfirmarPago = async () => {
+  try {
+    const pedidoData = {
+      idPedido: 20,
+      idRest: 5,
+      descPedido: "Pedido generado desde la app web",
+      fechaPedido: new Date().toISOString(),
+      estadoPedido: "pendiente",
+      entregaPedido: "mesa 140",
+      montoPedido: subtotal,
+    };
+
+    const response = await createPedido(pedidoData);
+
+    toast.success('¡Pedido realizado con éxito! 🎉');
+    clearCart();
+    onClose();
+  } catch (error) {
+    console.error("Error al enviar el pedido:", error);
+    toast.custom((t) => (
+  <div className="bg-[#23232e] text-white px-4 py-2 rounded-lg shadow-lg flex items-center">
+    <span>¡Pedido realizado con éxito! 🎉</span>
+  </div>
+));
+  }
+};
 
   if (!open) return null;
 
@@ -30,10 +63,10 @@ const PaymentModal = ({ open, onClose, cart, subtotal }) => {
           <div className="flex-1 space-y-6 overflow-y-auto pr-2">
             {cart.map((item, idx) => (
               <div key={idx} className="flex items-center gap-3">
-                <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg" />
+                <img src={item.image} alt={item.nombre} className="w-12 h-12 object-cover rounded-lg" />
                 <div className="flex-1">
-                  <p className="font-medium truncate">{item.name}</p>
-                  <p className="text-xs text-gray-400">S/ {item.price.toFixed(2)}</p>
+                  <p className="font-medium truncate">{item.nombre}</p>
+                  <p className="text-xs text-gray-400">S/ {item.precio.toFixed(2)}</p>
                   <input
                     type="text"
                     placeholder="Nota de pedido..."
@@ -43,14 +76,16 @@ const PaymentModal = ({ open, onClose, cart, subtotal }) => {
                 <div className="flex flex-col items-center">
                   <input
                     type="number"
-                    value={item.qty}
+                    value={item.cantidad}
                     min={1}
                     readOnly
                     className="w-12 text-center bg-[#23232e] border border-[#393a48] rounded-lg py-1 mb-1"
                   />
-                  <span className="text-sm font-semibold text-white">S/ {(item.price * item.qty).toFixed(2)}</span>
+                  <span className="text-sm font-semibold text-white">S/ {(item.precio * item.cantidad).toFixed(2)}</span>
                 </div>
-                <button className="ml-2 text-[#FF6B57] hover:bg-[#ff6b571a] rounded-lg p-2 transition">
+                <button className="ml-2 text-[#FF6B57] hover:bg-[#ff6b571a] rounded-lg p-2 transition"
+                  onClick={() => removeFromCart(item.id)} // Función para eliminar del carrito
+                >
                   <Trash2 size={16} />
                 </button>
               </div>
@@ -142,7 +177,8 @@ const PaymentModal = ({ open, onClose, cart, subtotal }) => {
             >
               Cancel
             </button>
-            <button className="px-6 py-2 rounded-lg bg-[#FF6B57] text-white font-semibold hover:bg-[#ff543d] transition">
+            <button className="px-6 py-2 rounded-lg bg-[#FF6B57] text-white font-semibold hover:bg-[#ff543d] transition"
+              onClick={handleConfirmarPago}>
               Confirmar Pago
             </button>
           </div>

@@ -1,23 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import ProductCard from '../components/ProductCard';
 import CartModal from '../components/CartModal';
 import ProviderFilter from '../components/ProviderFilter';
 import PaymentModal from '../components/PaymentModal'; // Importa el modal de pago
 import productsData from '../constants/productsData';
-
-// Usa el mismo carrito simulado que en CartModal para pasar datos al modal de pago
-const mockCart = [
-  { name: 'Leche Gloria Deslactosada', qty: 2, price: 2.29, image: 'assets/imagenes/leche.png' },
-  { name: 'Arroz Costeños Extra', qty: 1, price: 2.69, image: 'assets/imagenes/arroz2.png' },
-];
+import useProductos from '../hooks/useProductos';
+import { CartContext } from '../context/CartContext';
 
 const Home = () => {
   // Estado para mostrar/ocultar el modal de pago
   const [showPayment, setShowPayment] = useState(false);
-
+  const { productos, loading } = useProductos();
+  const { cartItems } = useContext(CartContext);
   // Calcula subtotal para pasar al modal de pago
-  const subtotal = mockCart.reduce((acc, item) => acc + item.price * item.qty, 0);
+  const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
 
   return (
     <div className="flex h-screen bg-[#1c1d27] text-white font-sans">
@@ -48,8 +45,9 @@ const Home = () => {
 
         {/* Productos */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {productsData.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {productos.map((product) => (
+            console.log(product), // Verificamos que el producto se esté pasando correctamente
+            <ProductCard key={product.id} producto={product} />
           ))}
         </div>
       </main>
@@ -64,7 +62,7 @@ const Home = () => {
       <PaymentModal
         open={showPayment}
         onClose={() => setShowPayment(false)}
-        cart={mockCart}
+        cart={cartItems}
         subtotal={subtotal}
       />
     </div>
